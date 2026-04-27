@@ -67,15 +67,15 @@ export const DonatePage = (): JSX.Element => {
   };
 
   return (
-    <main className="relative w-full overflow-x-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black animate-in fade-in duration-500">
       <NavigationBarSection />
 
       <section
         className="relative flex min-h-dvh bg-black pt-[120px]"
         aria-label="Donation form"
       >
-        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[600px_minmax(0,1fr)] lg:gap-0 lg:px-0 lg:pb-0">
-          <div className="relative hidden w-full overflow-hidden lg:block">
+        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-10 sm:px-6 md:grid-cols-[360px_minmax(0,1fr)] md:gap-0 md:px-0 md:pb-0 lg:grid-cols-[600px_minmax(0,1fr)]">
+          <div className="relative hidden w-full overflow-hidden md:block">
             <img
               src="/figmaAssets/donate-hero.png"
               alt="Coral reef"

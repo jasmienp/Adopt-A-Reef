@@ -31,7 +31,7 @@ export const AdoptPage = (): JSX.Element => {
   const activeImage = coralImages[activeIndex];
 
   return (
-    <main className="relative w-full overflow-x-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black animate-in fade-in duration-500">
       <NavigationBarSection />
       <section
         className="relative flex min-h-dvh items-center justify-center bg-black px-4 pb-10 pt-[120px] sm:px-6 lg:px-12 lg:pb-16"

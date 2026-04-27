@@ -13,7 +13,7 @@ const socialLinks = [
 
 export const HomePage = (): JSX.Element => {
   return (
-    <main className="relative w-full overflow-x-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black animate-in fade-in duration-500">
       <NavigationBarSection />
       <section
         id="home"

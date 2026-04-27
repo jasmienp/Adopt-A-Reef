@@ -54,15 +54,15 @@ export const VolunteerPage = (): JSX.Element => {
   };
 
   return (
-    <main className="relative w-full overflow-x-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black animate-in fade-in duration-500">
       <NavigationBarSection />
 
       <section
         className="relative flex min-h-dvh bg-black pt-[120px]"
         aria-label="Volunteer registration"
       >
-        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_600px] lg:gap-0 lg:px-0 lg:pb-0">
-          <div className="flex items-center justify-center lg:px-[40px]">
+        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-10 sm:px-6 md:grid-cols-[minmax(0,1fr)_360px] md:gap-0 md:px-0 md:pb-0 lg:grid-cols-[minmax(0,1fr)_600px]">
+          <div className="flex items-center justify-center md:px-[24px] lg:px-[40px]">
             <form
               onSubmit={handleSubmit}
               className="mx-auto flex w-full max-w-[560px] flex-col items-center justify-center gap-3"
@@ -104,7 +104,7 @@ export const VolunteerPage = (): JSX.Element => {
             </form>
           </div>
 
-          <div className="relative hidden w-full overflow-hidden lg:block">
+          <div className="relative hidden w-full overflow-hidden md:block">
             <img
               src="/figmaAssets/volunteer-hero.png"
               alt="Volunteers cleaning the ocean"
