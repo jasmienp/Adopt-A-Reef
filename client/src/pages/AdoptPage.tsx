@@ -93,7 +93,7 @@ export const AdoptPage = (): JSX.Element => {
             <Button
               type="button"
               data-testid="button-adopt-coral"
-              className="h-[51px] w-full max-w-[261px] rounded-[5px] border-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[28px] font-bold text-white shadow-[0px_5.09px_20.359px_-2px_rgba(0,0,0,0.25)] hover:opacity-95 sm:text-[32.57px]"
+              className="h-[51px] w-full max-w-[261px] rounded-[5px] border-2 border-transparent bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[28px] font-bold text-white shadow-[0px_5.09px_20.359px_-2px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:border-[#052698] hover:bg-none hover:bg-white hover:text-[#052698] sm:text-[32.57px]"
             >
               Adopt a Coral
             </Button>

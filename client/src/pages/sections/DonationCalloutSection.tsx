@@ -40,14 +40,14 @@ export const DonationCalloutSection = (): JSX.Element => {
           {donationAmounts.map((amount) => (
             <Card
               key={amount}
-              className="relative overflow-hidden rounded-[5px] border-0 bg-white shadow-[0px_5px_20px_-2px_#00000040] before:pointer-events-none before:absolute before:inset-0 before:rounded-[5px] before:p-[1px] before:content-[''] before:[background:linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude]"
+              className="group relative overflow-hidden rounded-[5px] border-0 bg-white shadow-[0px_5px_20px_-2px_#00000040] transition-colors duration-200 hover:bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[5px] before:p-[1px] before:content-[''] before:[background:linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] hover:before:[background:#ffffff]"
             >
               <CardContent className="flex h-[50px] items-center justify-center p-0">
                 <button
                   type="button"
                   onClick={() => setDonationValue(amount)}
                   data-testid={`button-donation-${amount}`}
-                  className="h-full w-full bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] bg-clip-text text-center [font-family:'DM_Sans',Helvetica] text-[26px] font-bold leading-[normal] tracking-[0] text-transparent [-webkit-text-fill-color:transparent] sm:text-[28px] md:text-[32px]"
+                  className="h-full w-full bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] bg-clip-text text-center [font-family:'DM_Sans',Helvetica] text-[26px] font-bold leading-[normal] tracking-[0] text-transparent transition-colors duration-200 [-webkit-text-fill-color:transparent] group-hover:bg-none group-hover:text-white group-hover:[-webkit-text-fill-color:#ffffff] sm:text-[28px] md:text-[32px]"
                 >
                   {amount}
                 </button>
