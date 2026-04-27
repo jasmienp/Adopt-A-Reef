@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const donationAmounts = [
   "₱ 20.00",
@@ -12,6 +13,8 @@ const donationAmounts = [
 ];
 
 export const DonationCalloutSection = (): JSX.Element => {
+  const [donationValue, setDonationValue] = useState("");
+
   return (
     <section className="relative w-full">
       <div className="mx-auto flex w-full max-w-[721px] flex-col items-center gap-[24px] px-4 py-6 sm:gap-[28px] md:gap-[32px] lg:gap-[36px]">
@@ -33,6 +36,8 @@ export const DonationCalloutSection = (): JSX.Element => {
               <CardContent className="flex h-[50px] items-center justify-center p-0">
                 <button
                   type="button"
+                  onClick={() => setDonationValue(amount)}
+                  data-testid={`button-donation-${amount}`}
                   className="h-full w-full bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] bg-clip-text text-center [font-family:'DM_Sans',Helvetica] text-[26px] font-bold leading-[normal] tracking-[0] text-transparent [-webkit-text-fill-color:transparent] sm:text-[28px] md:text-[32px]"
                 >
                   {amount}
@@ -46,8 +51,11 @@ export const DonationCalloutSection = (): JSX.Element => {
             <label htmlFor="donation-input" className="block">
               <Input
                 id="donation-input"
-                defaultValue="Input:"
-                className="h-[50px] border-0 bg-transparent px-4 [font-family:'DM_Sans',Helvetica] text-[20.6px] font-bold leading-[normal] tracking-[0] text-transparent shadow-none outline-none ring-0 placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                value={donationValue}
+                onChange={(e) => setDonationValue(e.target.value)}
+                placeholder="Input:"
+                data-testid="input-donation-amount"
+                className="h-[50px] border-0 bg-transparent px-4 [font-family:'DM_Sans',Helvetica] text-[20.6px] font-bold leading-[normal] tracking-[0] text-transparent shadow-none outline-none ring-0 placeholder:[-webkit-text-fill-color:#9ca3af] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 style={{
                   backgroundImage:
                     "linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)",
