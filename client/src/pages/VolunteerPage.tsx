@@ -54,34 +54,30 @@ export const VolunteerPage = (): JSX.Element => {
   };
 
   return (
-    <main className="relative w-full overflow-x-hidden bg-black">
+    <main className="flex h-dvh min-h-[680px] w-full flex-col overflow-hidden bg-black">
       <NavigationBarSection />
 
       <section
-        className="relative bg-black pt-32 md:pt-36"
+        className="relative flex min-h-0 flex-1 bg-black pt-[100px]"
         aria-label="Volunteer registration"
       >
-        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-10 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_700px] lg:gap-0 lg:px-0 lg:pb-24">
-          <div className="lg:px-[66px]">
+        <div className="mx-auto grid h-full w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-3 sm:px-6 lg:grid-cols-[minmax(0,1fr)_550px] lg:gap-0 lg:px-0 lg:pb-0">
+          <div className="flex items-center lg:px-[40px]">
             <form
               onSubmit={handleSubmit}
-              className="mx-auto flex w-full max-w-[623px] flex-col items-center justify-center gap-[17px]"
+              className="mx-auto flex w-full max-w-[600px] flex-col items-center justify-center gap-3"
             >
               <h1
-                className="w-full [font-family:'Inter',Helvetica] text-[44px] font-bold leading-tight text-white sm:text-[56px] lg:text-[64px]"
+                className="w-full [font-family:'Inter',Helvetica] text-[32px] font-bold leading-tight text-white sm:text-[40px] lg:text-[44px]"
                 data-testid="text-volunteer-title"
               >
                 Volunteer Form
               </h1>
-              <p className="w-full [font-family:'Poppins',Helvetica] text-[14px] font-normal leading-relaxed text-white">
+              <p className="w-full [font-family:'Poppins',Helvetica] text-[12px] font-normal leading-snug text-white sm:text-[13px]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Phasellus non vehicula dolor. Phasellus pharetra laoreet
                 pulvinar. Sed eleifend pulvinar consequat. Etiam ipsum dolor,
-                ultricies vel ornare ac, molestie a lectus. Mauris nisl arcu.
-                Donec ultrices quam non eros dictum laoreet. Pellentesque leo
-                quam, vehicula in tellus at, tristique sodales turpis.
-                Vestibulum vehicula eros dolor, vitae vulputate libero pharetra
-                non.
+                ultricies vel ornare ac, molestie a lectus.
               </p>
 
               {formFields.map((field) => (
@@ -92,7 +88,7 @@ export const VolunteerPage = (): JSX.Element => {
                   onChange={(e) => handleChange(field.id, e.target.value)}
                   placeholder={`   ${field.label}:`}
                   data-testid={`input-${field.id}`}
-                  className="h-[50px] w-full rounded-[5px] border-2 border-[#052698] bg-white px-4 [font-family:'DM_Sans',Helvetica] text-[16px] font-bold text-black shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="h-[42px] w-full rounded-[5px] border-2 border-[#052698] bg-white px-4 [font-family:'DM_Sans',Helvetica] text-[14px] font-bold text-black shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               ))}
 
@@ -100,7 +96,7 @@ export const VolunteerPage = (): JSX.Element => {
                 <Button
                   type="submit"
                   data-testid="button-submit-volunteer"
-                  className="h-[50px] w-[165px] rounded-[5px] border-2 border-transparent bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[28px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:border-[#052698] hover:bg-none hover:bg-white hover:text-[#052698] sm:text-[32px]"
+                  className="h-[44px] w-[150px] rounded-[5px] border-2 border-transparent bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[24px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:border-[#052698] hover:bg-none hover:bg-white hover:text-[#052698] sm:text-[28px]"
                 >
                   Submit
                 </Button>
@@ -108,7 +104,7 @@ export const VolunteerPage = (): JSX.Element => {
             </form>
           </div>
 
-          <div className="relative h-[400px] w-full overflow-hidden lg:h-auto lg:min-h-[1029px]">
+          <div className="relative hidden h-full w-full overflow-hidden lg:block">
             <img
               src="/figmaAssets/volunteer-hero.png"
               alt="Volunteers cleaning the ocean"
@@ -121,18 +117,18 @@ export const VolunteerPage = (): JSX.Element => {
 
       <footer
         id="contacts"
-        className="bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040] scroll-mt-24"
+        className="shrink-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040]"
       >
-        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-16 sm:px-16">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="[font-family:'Inter',Helvetica] text-2xl font-normal leading-[28.8px] tracking-[-0.48px] text-white">
+        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-4 sm:px-16">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="[font-family:'Inter',Helvetica] text-lg font-normal leading-tight tracking-[-0.36px] text-white">
               Let&apos;s work together
             </p>
             <nav aria-label="Social media">
               {socialLinks.map((link) => (
                 <img
                   key={link.src}
-                  className="h-6 w-[120px]"
+                  className="h-5 w-[100px]"
                   alt={link.alt}
                   src={link.src}
                 />
