@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useLocation } from "wouter";
 
 const donationAmounts = [
   "₱ 20.00",
@@ -14,6 +15,14 @@ const donationAmounts = [
 
 export const DonationCalloutSection = (): JSX.Element => {
   const [donationValue, setDonationValue] = useState("");
+  const [, setLocation] = useLocation();
+
+  const handleSubmit = () => {
+    const params = donationValue
+      ? `?amount=${encodeURIComponent(donationValue)}`
+      : "";
+    setLocation(`/donate${params}`);
+  };
 
   return (
     <section className="relative w-full">
@@ -62,6 +71,8 @@ export const DonationCalloutSection = (): JSX.Element => {
         </Card>
         <Button
           type="button"
+          onClick={handleSubmit}
+          data-testid="button-donate-submit"
           className="h-auto min-h-[50px] w-full max-w-[165px] rounded-[5px] border-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[32px] font-bold leading-[normal] tracking-[0] text-white shadow-[0px_5px_20px_-2px_#00000040] hover:opacity-95"
         >
           Submit
