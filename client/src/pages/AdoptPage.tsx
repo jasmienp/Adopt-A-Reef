@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NavigationBarSection } from "./sections/NavigationBarSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const socialLinks = [
   {
@@ -10,9 +10,25 @@ const socialLinks = [
   },
 ];
 
+const coralImages = [
+  { src: "/figmaAssets/adopt/coral-1.png", alt: "Coral reef sample 1" },
+  { src: "/figmaAssets/adopt/coral-2.png", alt: "Coral reef sample 2" },
+  { src: "/figmaAssets/adopt/coral-3.png", alt: "Coral reef sample 3" },
+];
+
 export const AdoptPage = (): JSX.Element => {
   const [amount, setAmount] = useState("");
   const [price, setPrice] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setActiveIndex((i) => (i + 1) % coralImages.length);
+    }, 3000);
+    return () => clearTimeout(id);
+  }, [activeIndex]);
+
+  const activeImage = coralImages[activeIndex];
 
   return (
     <main className="relative w-full overflow-x-hidden bg-black">
@@ -22,32 +38,35 @@ export const AdoptPage = (): JSX.Element => {
         aria-label="Adopt a coral"
       >
         <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center gap-12 lg:flex-row lg:items-start lg:gap-[81px]">
-          <div className="grid w-full max-w-[680px] grid-cols-2 gap-4 sm:gap-6 lg:w-auto lg:flex-shrink-0">
+          <div className="grid w-full max-w-[680px] grid-cols-[1fr_2fr] gap-4 sm:gap-6 lg:w-auto lg:flex-shrink-0">
             <div className="flex flex-col gap-4 sm:gap-6">
-              <img
-                src="/figmaAssets/adopt/coral-1.png"
-                alt="Coral reef sample 1"
-                className="aspect-square w-full rounded-[4.185px] object-cover"
-                data-testid="img-coral-1"
-              />
-              <img
-                src="/figmaAssets/adopt/coral-2.png"
-                alt="Coral reef sample 2"
-                className="aspect-square w-full rounded-[4.185px] object-cover"
-                data-testid="img-coral-2"
-              />
-              <img
-                src="/figmaAssets/adopt/coral-3.png"
-                alt="Coral reef sample 3"
-                className="aspect-square w-full rounded-[4.185px] object-cover"
-                data-testid="img-coral-3"
-              />
+              {coralImages.map((image, index) => (
+                <button
+                  key={image.src}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  data-testid={`button-coral-${index + 1}`}
+                  className={`overflow-hidden rounded-[4.185px] transition-all duration-200 focus:outline-none ${
+                    activeIndex === index
+                      ? "ring-2 ring-[#21BCEE] ring-offset-2 ring-offset-black"
+                      : "opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="aspect-square w-full object-cover"
+                    data-testid={`img-coral-${index + 1}`}
+                  />
+                </button>
+              ))}
             </div>
             <div className="flex">
               <img
-                src="/figmaAssets/adopt/coral-4.png"
-                alt="Featured coral reef"
-                className="h-full w-full rounded-[4.185px] object-cover"
+                key={activeImage.src}
+                src={activeImage.src}
+                alt={activeImage.alt}
+                className="h-full w-full rounded-[4.185px] object-cover animate-in fade-in duration-500"
                 data-testid="img-coral-featured"
               />
             </div>
