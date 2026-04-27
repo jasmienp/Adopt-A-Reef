@@ -67,15 +67,15 @@ export const DonatePage = (): JSX.Element => {
   };
 
   return (
-    <main className="flex h-dvh min-h-[720px] w-full flex-col overflow-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black">
       <NavigationBarSection />
 
       <section
-        className="relative flex min-h-0 flex-1 bg-black pt-[92px]"
+        className="relative flex min-h-dvh bg-black pt-[120px]"
         aria-label="Donation form"
       >
-        <div className="mx-auto grid h-full w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-2 sm:px-6 lg:grid-cols-[550px_minmax(0,1fr)] lg:gap-0 lg:px-0 lg:pb-0">
-          <div className="relative hidden h-full w-full overflow-hidden lg:block">
+        <div className="mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[600px_minmax(0,1fr)] lg:gap-0 lg:px-0 lg:pb-0">
+          <div className="relative hidden w-full overflow-hidden lg:block">
             <img
               src="/figmaAssets/donate-hero.png"
               alt="Coral reef"
@@ -84,18 +84,18 @@ export const DonatePage = (): JSX.Element => {
             />
           </div>
 
-          <div className="flex items-center lg:px-[40px]">
+          <div className="flex items-center justify-center lg:px-[40px]">
             <form
               onSubmit={handleSubmit}
-              className="mx-auto flex w-full max-w-[600px] flex-col items-center justify-center gap-2.5"
+              className="mx-auto flex w-full max-w-[560px] flex-col items-center justify-center gap-2.5"
             >
               <h1
-                className="w-full [font-family:'Inter',Helvetica] text-[32px] font-bold leading-tight text-white sm:text-[40px] lg:text-[44px]"
+                className="w-full text-center [font-family:'Inter',Helvetica] text-[36px] font-bold leading-tight text-white sm:text-[44px] lg:text-[48px]"
                 data-testid="text-donate-title"
               >
                 Donation Form
               </h1>
-              <p className="w-full [font-family:'Poppins',Helvetica] text-[12px] font-normal leading-snug text-white sm:text-[13px]">
+              <p className="w-full text-center [font-family:'Poppins',Helvetica] text-[13px] font-normal leading-snug text-white sm:text-[14px]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Phasellus non vehicula dolor. Phasellus pharetra laoreet
                 pulvinar. Sed eleifend pulvinar consequat.
@@ -106,7 +106,7 @@ export const DonatePage = (): JSX.Element => {
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="   Amount:"
                 data-testid="input-donation-amount"
-                className="h-[40px] w-full rounded-[5px] border-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-4 [font-family:'DM_Sans',Helvetica] text-[14px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-white/90 focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-[42px] w-full rounded-[5px] border-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-4 [font-family:'DM_Sans',Helvetica] text-[15px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-white/90 focus-visible:ring-0 focus-visible:ring-offset-0"
               />
 
               {formFields.map((field) => (
@@ -117,15 +117,15 @@ export const DonatePage = (): JSX.Element => {
                   onChange={(e) => handleChange(field.id, e.target.value)}
                   placeholder={`   ${field.label}:`}
                   data-testid={`input-${field.id}`}
-                  className="h-[40px] w-full rounded-[5px] border-2 border-[#052698] bg-white px-4 [font-family:'DM_Sans',Helvetica] text-[14px] font-bold text-black shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="h-[42px] w-full rounded-[5px] border-2 border-[#052698] bg-white px-4 [font-family:'DM_Sans',Helvetica] text-[15px] font-bold text-black shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               ))}
 
-              <div className="flex w-full justify-start">
+              <div className="flex w-full justify-center">
                 <Button
                   type="submit"
                   data-testid="button-submit-donation"
-                  className="h-[44px] w-[150px] rounded-[5px] border-2 border-transparent bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[24px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:border-[#052698] hover:bg-none hover:bg-white hover:text-[#052698] sm:text-[28px]"
+                  className="h-[46px] w-[160px] rounded-[5px] border-2 border-transparent bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] px-6 py-2 [font-family:'DM_Sans',Helvetica] text-[26px] font-bold text-white shadow-[0px_5px_20px_-2px_rgba(0,0,0,0.25)] transition-colors duration-200 hover:border-[#052698] hover:bg-none hover:bg-white hover:text-[#052698] sm:text-[28px]"
                 >
                   Submit
                 </Button>
@@ -137,18 +137,18 @@ export const DonatePage = (): JSX.Element => {
 
       <footer
         id="contacts"
-        className="shrink-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040]"
+        className="bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040] scroll-mt-24"
       >
-        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-4 sm:px-16">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="[font-family:'Inter',Helvetica] text-lg font-normal leading-tight tracking-[-0.36px] text-white">
+        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-16 sm:px-16">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="[font-family:'Inter',Helvetica] text-2xl font-normal leading-[28.8px] tracking-[-0.48px] text-white">
               Let&apos;s work together
             </p>
             <nav aria-label="Social media">
               {socialLinks.map((link) => (
                 <img
                   key={link.src}
-                  className="h-5 w-[100px]"
+                  className="h-6 w-[120px]"
                   alt={link.alt}
                   src={link.src}
                 />

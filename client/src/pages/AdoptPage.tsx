@@ -31,14 +31,14 @@ export const AdoptPage = (): JSX.Element => {
   const activeImage = coralImages[activeIndex];
 
   return (
-    <main className="flex h-dvh min-h-[640px] w-full flex-col overflow-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black">
       <NavigationBarSection />
       <section
-        className="relative flex min-h-0 flex-1 items-center bg-black px-4 pb-3 pt-[100px] sm:px-6 lg:px-12"
+        className="relative flex min-h-dvh items-center justify-center bg-black px-4 pb-10 pt-[120px] sm:px-6 lg:px-12 lg:pb-16"
         aria-label="Adopt a coral"
       >
-        <div className="mx-auto flex h-full w-full max-w-[1280px] flex-col items-stretch gap-6 lg:flex-row lg:items-center lg:gap-12">
-          <div className="grid h-full max-h-[60vh] w-full max-w-[520px] flex-shrink-0 grid-cols-[1fr_2fr] gap-3 lg:max-h-full">
+        <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center justify-center gap-8 lg:flex-row lg:items-center lg:gap-12">
+          <div className="grid h-full max-h-[70vh] w-full max-w-[520px] flex-shrink-0 grid-cols-[1fr_2fr] gap-3 lg:max-h-[70vh]">
             <div className="flex h-full min-h-0 flex-col gap-3">
               {coralImages.map((image, index) => (
                 <button
@@ -117,18 +117,18 @@ export const AdoptPage = (): JSX.Element => {
 
       <footer
         id="contacts"
-        className="shrink-0 bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040]"
+        className="bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040] scroll-mt-24"
       >
-        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-4 sm:px-16">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="[font-family:'Inter',Helvetica] text-lg font-normal leading-tight tracking-[-0.36px] text-white">
+        <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-16 sm:px-16">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="[font-family:'Inter',Helvetica] text-2xl font-normal leading-[28.8px] tracking-[-0.48px] text-white">
               Let&apos;s work together
             </p>
             <nav aria-label="Social media">
               {socialLinks.map((link) => (
                 <img
                   key={link.src}
-                  className="h-5 w-[100px]"
+                  className="h-6 w-[120px]"
                   alt={link.alt}
                   src={link.src}
                 />
