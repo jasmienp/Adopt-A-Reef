@@ -15,7 +15,8 @@ export const HomePage = (): JSX.Element => {
   return (
     <main className="relative w-full overflow-x-hidden bg-black">
       <section
-        className="relative isolate overflow-hidden bg-black"
+        id="home"
+        className="relative isolate overflow-hidden bg-black scroll-mt-24"
         aria-label="Hero section"
       >
         <img
@@ -31,12 +32,13 @@ export const HomePage = (): JSX.Element => {
           </div>
         </div>
       </section>
-      <section className="bg-black pt-8 md:pt-12">
+      <section id="adopt" className="bg-black pt-8 md:pt-12 scroll-mt-24">
         <div className="mx-auto w-full max-w-[1440px]">
           <ActionCardsSection />
         </div>
       </section>
-      <section className="relative bg-black pt-10 md:pt-14">
+      <section id="volunteer" className="scroll-mt-24" aria-hidden="true" />
+      <section id="donate" className="relative bg-black pt-10 md:pt-14 scroll-mt-24">
         <div className="mx-auto w-full max-w-[1440px]">
           <Card className="overflow-hidden rounded-t-[48px] rounded-b-none border-0 bg-white shadow-none md:rounded-t-[60px]">
             <CardContent className="grid p-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -54,7 +56,7 @@ export const HomePage = (): JSX.Element => {
           </Card>
         </div>
       </section>
-      <footer className="bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040]">
+      <footer id="contacts" className="bg-[linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)] shadow-[0px_-4px_10px_#00000040] scroll-mt-24">
         <div className="mx-auto w-full max-w-[1440px] border-t border-[#00000026] px-[30px] py-16 sm:px-16">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <p className="[font-family:'Inter',Helvetica] text-2xl font-normal leading-[28.8px] tracking-[-0.48px] text-white">
