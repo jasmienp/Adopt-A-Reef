@@ -55,13 +55,7 @@ export const DonationCalloutSection = (): JSX.Element => {
                 onChange={(e) => setDonationValue(e.target.value)}
                 placeholder="Input:"
                 data-testid="input-donation-amount"
-                className="h-[50px] border-0 bg-transparent px-4 [font-family:'DM_Sans',Helvetica] text-[20.6px] font-bold leading-[normal] tracking-[0] text-transparent shadow-none outline-none ring-0 placeholder:[-webkit-text-fill-color:#9ca3af] placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(90deg,rgba(5,38,152,1)_0%,rgba(17,107,248,1)_50%,rgba(33,188,238,1)_100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
+                className="h-[50px] border-0 bg-transparent px-4 [font-family:'DM_Sans',Helvetica] text-[20.6px] font-bold leading-[normal] tracking-[0] text-black shadow-none outline-none ring-0 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
               />
             </label>
           </CardContent>
