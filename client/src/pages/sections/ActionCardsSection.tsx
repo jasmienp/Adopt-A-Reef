@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { useLocation } from "wouter";
 
 const actionCards = [
   {
@@ -6,22 +7,27 @@ const actionCards = [
     title: "Ocean Clean Up",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non vehicula dolor. Phasellus pharetra laoreet pulvinar.",
+    href: "/volunteer",
   },
   {
     image: "../figmaAssets/frame-7.png",
     title: "Ocean Clean Up",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non vehicula dolor. Phasellus pharetra laoreet pulvinar.",
+    href: "/volunteer",
   },
   {
     image: "../figmaAssets/frame-8.png",
     title: "Ocean Clean Up",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non vehicula dolor. Phasellus pharetra laoreet pulvinar.",
+    href: "/volunteer",
   },
 ];
 
 export const ActionCardsSection = (): JSX.Element => {
+  const [, setLocation] = useLocation();
+
   return (
     <section className="relative w-full px-9 py-0">
       <div className="mx-auto flex w-full max-w-[1288px] flex-col gap-[43px]">
@@ -34,7 +40,17 @@ export const ActionCardsSection = (): JSX.Element => {
           {actionCards.map((card, index) => (
             <Card
               key={`action-card-${index}`}
-              className="group relative h-[528px] overflow-hidden rounded-[13px] border-0 bg-transparent shadow-none"
+              role="button"
+              tabIndex={0}
+              onClick={() => setLocation(card.href)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setLocation(card.href);
+                }
+              }}
+              data-testid={`card-action-${index}`}
+              className="group relative h-[528px] cursor-pointer overflow-hidden rounded-[13px] border-0 bg-transparent shadow-none transition-transform hover-elevate active-elevate-2 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <CardContent className="relative flex h-full items-end p-0">
                 <img
