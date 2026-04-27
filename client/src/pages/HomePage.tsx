@@ -14,9 +14,10 @@ const socialLinks = [
 export const HomePage = (): JSX.Element => {
   return (
     <main className="relative w-full overflow-x-hidden bg-black">
+      <NavigationBarSection />
       <section
         id="home"
-        className="relative isolate overflow-hidden bg-black scroll-mt-24"
+        className="relative overflow-hidden bg-black scroll-mt-24"
         aria-label="Hero section"
       >
         <img
@@ -26,8 +27,7 @@ export const HomePage = (): JSX.Element => {
         />
         <div className="absolute inset-x-0 bottom-0 h-[212px] bg-[linear-gradient(180deg,rgba(5,38,152,0)_0%,rgba(17,107,248,0.7)_100%)]" />
         <div className="relative z-10 mx-auto flex min-h-[1024px] w-full max-w-[1440px] flex-col">
-          <NavigationBarSection />
-          <div className="flex flex-1 items-start justify-center pt-16 md:pt-20">
+          <div className="flex flex-1 items-start justify-center pt-32 md:pt-36">
             <HeroContentSection />
           </div>
         </div>

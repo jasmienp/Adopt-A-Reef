@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 const navigationItems = [
   { label: "Home", targetId: "home" },
-  { label: "Adopt", targetId: "adopt" },
-  { label: "Volunteer", targetId: "volunteer" },
+  { label: "Adopt", targetId: "home" },
+  { label: "Volunteer", targetId: "adopt" },
   { label: "Donate", targetId: "donate" },
   { label: "Contacts", targetId: "contacts" },
 ];
