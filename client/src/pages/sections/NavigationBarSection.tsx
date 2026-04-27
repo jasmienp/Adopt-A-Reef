@@ -10,7 +10,7 @@ const navigationItems = [
 
 export const NavigationBarSection = (): JSX.Element => {
   return (
-    <header className="relative z-10 flex w-full justify-center px-4 py-[27px] sm:px-6 lg:px-[360px]">
+    <header className="fixed top-0 left-0 right-0 z-50 flex w-full justify-center px-4 py-[27px] sm:px-6 lg:px-[360px]">
       <nav
         aria-label="Primary"
         className="flex w-full max-w-[720px] items-center justify-between rounded-[18px] bg-black px-[18px] py-[9px] backdrop-blur-[39.38px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(39.38px)_brightness(100%)]"
