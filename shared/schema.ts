@@ -73,20 +73,31 @@ export const donations = pgTable("donations", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull(),
   amount: integer("amount").notNull(),
+  donorName: text("donor_name"),
+  donorEmail: text("donor_email"),
   donatedAt: timestamp("donated_at").notNull().defaultNow(),
 });
 
-export const insertDonationSchema = createInsertSchema(donations).omit({
-  id: true,
-  userId: true,
-  donatedAt: true,
-});
+export const insertDonationSchema = createInsertSchema(donations)
+  .omit({ id: true, userId: true, donatedAt: true })
+  .extend({
+    amount: z.coerce
+      .number()
+      .int()
+      .min(1, "Minimum donation is $1")
+      .max(100000, "Maximum donation is $100,000"),
+    donorName: z.string().trim().optional(),
+    donorEmail: z.string().email("Invalid email address").optional().or(z.literal("")),
+  });
 
 export type InsertDonation = z.infer<typeof insertDonationSchema>;
 export type Donation = typeof donations.$inferSelect;
 
-export const VOLUNTEER_STATUSES = ["open", "closed", "completed"] as const;
+export const VOLUNTEER_STATUSES = ["open", "closed", "completed", "ongoing", "cancelled"] as const;
 export type VolunteerStatus = (typeof VOLUNTEER_STATUSES)[number];
+
+export const VOLUNTEER_CATEGORIES = ["cleanup", "replanting", "survey", "outreach", "other"] as const;
+export type VolunteerCategory = (typeof VOLUNTEER_CATEGORIES)[number];
 
 export const volunteerWorks = pgTable("volunteer_works", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -94,8 +105,11 @@ export const volunteerWorks = pgTable("volunteer_works", {
   description: text("description").notNull(),
   location: text("location").notNull(),
   scheduledFor: timestamp("scheduled_for").notNull(),
+  endDate: timestamp("end_date"),
   hours: integer("hours").notNull(),
   status: text("status").notNull().default("open"),
+  category: text("category").notNull().default("other"),
+  maxVolunteers: integer("max_volunteers"),
 });
 
 export const insertVolunteerWorkSchema = createInsertSchema(volunteerWorks)
@@ -106,7 +120,10 @@ export const insertVolunteerWorkSchema = createInsertSchema(volunteerWorks)
     location: z.string().trim().min(1, "Location is required"),
     hours: z.coerce.number().int().positive("Hours must be positive"),
     scheduledFor: z.coerce.date(),
+    endDate: z.coerce.date().optional().nullable(),
     status: z.enum(VOLUNTEER_STATUSES).default("open"),
+    category: z.enum(VOLUNTEER_CATEGORIES).default("other"),
+    maxVolunteers: z.coerce.number().int().positive().optional().nullable(),
   });
 
 export const updateVolunteerWorkSchema = insertVolunteerWorkSchema.partial();

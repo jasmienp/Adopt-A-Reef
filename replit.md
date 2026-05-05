@@ -4,10 +4,10 @@
 
 This is a coral reef conservation web application that allows users to:
 - **Adopt** virtual coral specimens (with stock tracking)
-- **Donate** money to conservation efforts
-- **Volunteer** for ocean cleanup and related events
-- Manage their account (view adoptions, donations, volunteer sign-ups)
-- Admin panel for managing coral listings, volunteer work entries, users, and donations
+- **Donate** money to conservation efforts (with full form validation)
+- **Volunteer** for ocean cleanup and related events (with category filtering, capacity bars, progress bars)
+- Manage their account (view adoptions, donations, volunteer sign-ups with progress tracking)
+- Admin panel with charts, table views for adoptions/donations/users, and full CRUD for corals/volunteer works
 
 The app is a full-stack TypeScript project with a React frontend and an Express backend, sharing types via a `shared/` folder.
 
@@ -26,8 +26,8 @@ Preferred communication style: Simple, everyday language.
 - **Routing**: `wouter` (lightweight client-side router)
 - **State / Data fetching**: TanStack Query (React Query v5) — all API calls go through `apiRequest` in `client/src/lib/queryClient.ts`
 - **UI Components**: shadcn/ui (New York style) built on Radix UI primitives, styled with Tailwind CSS
-- **Forms**: React Hook Form + Zod resolvers
-- **Charts**: Recharts (via shadcn chart wrapper)
+- **Forms**: React Hook Form + Zod resolvers (full validation on DonatePage)
+- **Charts**: Recharts — bar charts, pie charts on AdminPage
 - **Font**: Inter and Roboto loaded from Google Fonts
 
 Key pages (all in `client/src/pages/`):
@@ -35,11 +35,11 @@ Key pages (all in `client/src/pages/`):
 |---|---|---|
 | HomePage | `/` | Landing page with hero, action cards, donation callout |
 | AdoptPage | `/adopt` | Browse and adopt coral listings |
-| VolunteerPage | `/volunteer` | Browse volunteer events, sign up, view expense breakdown |
-| DonatePage | `/donate` | Donation form |
+| VolunteerPage | `/volunteer` | Category tabs, capacity bars, progress bars, expense breakdown |
+| DonatePage | `/donate` | Fully validated donation form (react-hook-form + zod) |
 | AuthPage | `/auth`, `/login`, `/signup` | Login / register (toggled by tab state) |
-| AccountPage | `/account`, `/my-adoptions` | User's adoptions, donations, volunteer sign-ups |
-| AdminPage | `/admin` | Admin CRUD for corals, volunteer works, users, adoptions |
+| AccountPage | `/account`, `/my-adoptions` | Adoptions, donations, volunteer sign-ups with progress bars |
+| AdminPage | `/admin` | Overview charts, CRUD for corals/works, Adoptions/Donators/Users tables |
 
 Auth state is managed through a `useAuth()` hook that queries `/api/auth/me`. The hook exposes `user`, `isAuthenticated`, `isAdmin`, and `isLoading`.
 
@@ -62,12 +62,31 @@ Tables:
 | `users` | User accounts (username, hashed password, isAdmin flag) |
 | `corals` | Coral catalog (name, image, description, price, stock) |
 | `adoptions` | Records of user coral adoptions |
-| `donations` | Donation records linked to users |
-| `volunteer_works` | Volunteer event listings |
+| `donations` | Donation records (amount, donorName, donorEmail) linked to users |
+| `volunteer_works` | Volunteer event listings (category, maxVolunteers, endDate, status) |
 | `volunteer_signups` | User sign-ups for volunteer events |
+
+### Volunteer Work Features
+- **Statuses**: `open`, `closed`, `completed`, `ongoing`, `cancelled`
+- **Categories**: `cleanup`, `replanting`, `survey`, `outreach`, `other`
+- **Auto-complete**: Events whose end date has passed are automatically marked `completed`
+- **Auto-close**: Events reaching `maxVolunteers` capacity are automatically marked `closed`
+- **Auto-reopen**: Cancelling a signup when below capacity re-opens the event
+- **Multi-day events**: Optional `endDate` field for events spanning multiple days
+
+### Admin Endpoints
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/admin/adoptions` | All adoptions enriched with username |
+| `GET /api/admin/donations` | All donations enriched with username |
+| `GET /api/admin/users` | All users with adoption count, donation total, volunteer shifts |
+| `GET /api/admin/volunteer-signups` | All signups enriched with username and work title |
+| `POST/PATCH/DELETE /api/admin/corals/:id` | Coral CRUD |
+| `POST/PATCH/DELETE /api/admin/volunteer-works/:id` | Volunteer work CRUD |
 
 ### Storage Interface (`server/storage.ts`)
 - `IStorage` interface abstracts all database operations, allowing the backend to swap implementations (in-memory vs. Postgres) without changing route logic.
+- `MemStorage` is the active implementation (in-memory, seeded with sample corals and volunteer works).
 - All IDs are UUIDs generated server-side.
 
 ### Build
@@ -101,9 +120,7 @@ Tables:
 | `radix-ui/*` + shadcn/ui | Accessible UI primitives |
 | `react-hook-form` + `zod` | Form state and validation |
 | `tailwindcss` | Utility CSS |
-| `recharts` | Charts (expense breakdown) |
-| `date-fns` | Date formatting |
-| `nanoid` | Short ID generation |
+| `recharts` | Charts (admin overview, expense breakdown) |
 | `vite` | Frontend dev server and bundler |
 | `tsx` | TypeScript execution for dev server |
 | `esbuild` | Server bundler for production |

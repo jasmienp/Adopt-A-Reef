@@ -34,11 +34,7 @@ export interface IStorage {
   updateCoral(id: string, updates: UpdateCoral): Promise<Coral | undefined>;
   deleteCoral(id: string): Promise<boolean>;
 
-  createAdoption(
-    userId: string,
-    coralId: string,
-    amount: number,
-  ): Promise<AdoptionResult>;
+  createAdoption(userId: string, coralId: string, amount: number): Promise<AdoptionResult>;
   getAdoptionsByUserId(userId: string): Promise<Adoption[]>;
   getAllAdoptions(): Promise<Adoption[]>;
   deleteAdoption(userId: string, adoptionId: string): Promise<boolean>;
@@ -51,10 +47,7 @@ export interface IStorage {
   getAllVolunteerWorks(): Promise<VolunteerWork[]>;
   getVolunteerWork(id: string): Promise<VolunteerWork | undefined>;
   createVolunteerWork(work: InsertVolunteerWork): Promise<VolunteerWork>;
-  updateVolunteerWork(
-    id: string,
-    updates: UpdateVolunteerWork,
-  ): Promise<VolunteerWork | undefined>;
+  updateVolunteerWork(id: string, updates: UpdateVolunteerWork): Promise<VolunteerWork | undefined>;
   deleteVolunteerWork(id: string): Promise<boolean>;
 
   createVolunteerSignup(userId: string, workId: string): Promise<VolunteerSignup | null>;
@@ -89,24 +82,21 @@ export class MemStorage implements IStorage {
       {
         name: "Staghorn Coral",
         image: "/figmaAssets/adopt/coral-1.png",
-        description:
-          "Fast-growing branching coral that builds the reef's structural backbone.",
+        description: "Fast-growing branching coral that builds the reef's structural backbone.",
         price: 50,
         stock: 25,
       },
       {
         name: "Brain Coral",
         image: "/figmaAssets/adopt/coral-2.png",
-        description:
-          "Slow-growing dome coral known for its grooved, brain-like surface.",
+        description: "Slow-growing dome coral known for its grooved, brain-like surface.",
         price: 75,
         stock: 15,
       },
       {
         name: "Elkhorn Coral",
         image: "/figmaAssets/adopt/coral-3.png",
-        description:
-          "Critically endangered shallow-water coral with broad, antler-like branches.",
+        description: "Critically endangered shallow-water coral with broad, antler-like branches.",
         price: 90,
         stock: 10,
       },
@@ -123,57 +113,69 @@ export class MemStorage implements IStorage {
     const seed: Array<Omit<VolunteerWork, "id">> = [
       {
         title: "Reef Cleanup Dive — Maui",
-        description:
-          "Join certified divers to remove ghost nets and debris from a reef site off Maui's southern coast.",
+        description: "Join certified divers to remove ghost nets and debris from a reef site off Maui's southern coast.",
         location: "Maui, Hawaii",
         scheduledFor: new Date(now + 14 * day),
+        endDate: new Date(now + 14 * day + 6 * 60 * 60 * 1000),
         hours: 6,
         status: "open",
+        category: "cleanup",
+        maxVolunteers: 20,
       },
       {
         title: "Coral Nursery Maintenance",
-        description:
-          "Help clean nursery trees, monitor growth, and prep coral fragments for outplanting.",
+        description: "Help clean nursery trees, monitor growth, and prep coral fragments for outplanting.",
         location: "Key Largo, Florida",
         scheduledFor: new Date(now + 21 * day),
+        endDate: null,
         hours: 4,
         status: "open",
+        category: "replanting",
+        maxVolunteers: 15,
       },
       {
         title: "Beach Plastic Pickup",
-        description:
-          "A morning shoreline cleanup focused on microplastics. Gloves and bags provided.",
+        description: "A morning shoreline cleanup focused on microplastics. Gloves and bags provided.",
         location: "Santa Monica, California",
         scheduledFor: new Date(now + 7 * day),
+        endDate: null,
         hours: 3,
         status: "open",
+        category: "cleanup",
+        maxVolunteers: 30,
       },
       {
         title: "Mangrove Replanting Day",
-        description:
-          "Restore the coastal mangrove buffer that protects nearby reefs from runoff.",
+        description: "Restore the coastal mangrove buffer that protects nearby reefs from runoff.",
         location: "Tampa Bay, Florida",
         scheduledFor: new Date(now + 30 * day),
+        endDate: new Date(now + 31 * day),
         hours: 5,
         status: "open",
+        category: "replanting",
+        maxVolunteers: 25,
       },
       {
         title: "School Outreach Workshop",
-        description:
-          "We taught 120 students about coral biology and reef-safe sunscreen.",
+        description: "We taught 120 students about coral biology and reef-safe sunscreen.",
         location: "San Diego, California",
         scheduledFor: new Date(now - 12 * day),
+        endDate: null,
         hours: 4,
         status: "completed",
+        category: "outreach",
+        maxVolunteers: null,
       },
       {
         title: "Reef Survey — Great Barrier",
-        description:
-          "Volunteers logged bleaching observations across three reef sites.",
+        description: "Volunteers logged bleaching observations across three reef sites.",
         location: "Cairns, Australia",
         scheduledFor: new Date(now - 28 * day),
+        endDate: new Date(now - 25 * day),
         hours: 8,
         status: "completed",
+        category: "survey",
+        maxVolunteers: null,
       },
     ];
     for (const work of seed) {
@@ -182,19 +184,37 @@ export class MemStorage implements IStorage {
     }
   }
 
+  private autoUpdateWorkStatus(work: VolunteerWork, signupCount: number): VolunteerWork {
+    const now = new Date();
+    const endTime = work.endDate ?? work.scheduledFor;
+    // Auto-complete if event date is past and not already completed/cancelled
+    if (endTime < now && work.status !== "completed" && work.status !== "cancelled") {
+      const updated = { ...work, status: "completed" as const };
+      this.volunteerWorks.set(work.id, updated);
+      return updated;
+    }
+    // Auto-close signups if maxVolunteers reached
+    if (
+      work.maxVolunteers != null &&
+      signupCount >= work.maxVolunteers &&
+      work.status === "open"
+    ) {
+      const updated = { ...work, status: "closed" as const };
+      this.volunteerWorks.set(work.id, updated);
+      return updated;
+    }
+    return work;
+  }
+
   async getUser(id: string): Promise<User | undefined> {
     return this.users.get(id);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    return Array.from(this.users.values()).find((user) => user.username === username);
   }
 
-  async createUser(
-    insertUser: InsertUser & { isAdmin?: boolean },
-  ): Promise<User> {
+  async createUser(insertUser: InsertUser & { isAdmin?: boolean }): Promise<User> {
     const id = randomUUID();
     const user: User = {
       id,
@@ -207,15 +227,10 @@ export class MemStorage implements IStorage {
   }
 
   async getAllUsers(): Promise<User[]> {
-    return Array.from(this.users.values()).sort((a, b) =>
-      a.username.localeCompare(b.username),
-    );
+    return Array.from(this.users.values()).sort((a, b) => a.username.localeCompare(b.username));
   }
 
-  async setUserAdmin(
-    userId: string,
-    isAdmin: boolean,
-  ): Promise<User | undefined> {
+  async setUserAdmin(userId: string, isAdmin: boolean): Promise<User | undefined> {
     const user = this.users.get(userId);
     if (!user) return undefined;
     const updated: User = { ...user, isAdmin };
@@ -238,9 +253,7 @@ export class MemStorage implements IStorage {
   }
 
   async getAllCorals(): Promise<Coral[]> {
-    return Array.from(this.corals.values()).sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    return Array.from(this.corals.values()).sort((a, b) => a.name.localeCompare(b.name));
   }
 
   async getCoral(id: string): Promise<Coral | undefined> {
@@ -254,10 +267,7 @@ export class MemStorage implements IStorage {
     return coral;
   }
 
-  async updateCoral(
-    id: string,
-    updates: UpdateCoral,
-  ): Promise<Coral | undefined> {
+  async updateCoral(id: string, updates: UpdateCoral): Promise<Coral | undefined> {
     const existing = this.corals.get(id);
     if (!existing) return undefined;
     const merged: Coral = { ...existing, ...updates };
@@ -269,17 +279,11 @@ export class MemStorage implements IStorage {
     return this.corals.delete(id);
   }
 
-  async createAdoption(
-    userId: string,
-    coralId: string,
-    amount: number,
-  ): Promise<AdoptionResult> {
+  async createAdoption(userId: string, coralId: string, amount: number): Promise<AdoptionResult> {
     const coral = this.corals.get(coralId);
     if (!coral) return { ok: false, reason: "not_found" };
     if (coral.stock < amount) return { ok: false, reason: "out_of_stock" };
-
     this.corals.set(coralId, { ...coral, stock: coral.stock - amount });
-
     const id = randomUUID();
     const adoption: Adoption = {
       id,
@@ -317,15 +321,14 @@ export class MemStorage implements IStorage {
     return this.adoptions.delete(adoptionId);
   }
 
-  async createDonation(
-    userId: string,
-    insertDonation: InsertDonation,
-  ): Promise<Donation> {
+  async createDonation(userId: string, insertDonation: InsertDonation): Promise<Donation> {
     const id = randomUUID();
     const donation: Donation = {
       ...insertDonation,
       id,
       userId,
+      donorName: insertDonation.donorName ?? null,
+      donorEmail: insertDonation.donorEmail || null,
       donatedAt: new Date(),
     };
     this.donations.set(id, donation);
@@ -339,25 +342,28 @@ export class MemStorage implements IStorage {
   }
 
   async getAllDonations(): Promise<Donation[]> {
-    return Array.from(this.donations.values());
+    return Array.from(this.donations.values()).sort(
+      (a, b) => b.donatedAt.getTime() - a.donatedAt.getTime(),
+    );
   }
 
   async getAllVolunteerWorks(): Promise<VolunteerWork[]> {
+    const counts = await this.getSignupCountsByWorkId();
     const order = (s: string) =>
-      s === "open" ? 0 : s === "closed" ? 1 : 2;
-    return Array.from(this.volunteerWorks.values()).sort((a, b) => {
-      if (a.status !== b.status) return order(a.status) - order(b.status);
-      return a.scheduledFor.getTime() - b.scheduledFor.getTime();
-    });
+      s === "open" ? 0 : s === "ongoing" ? 1 : s === "closed" ? 2 : s === "completed" ? 3 : 4;
+    return Array.from(this.volunteerWorks.values())
+      .map((w) => this.autoUpdateWorkStatus(w, counts[w.id] ?? 0))
+      .sort((a, b) => {
+        if (a.status !== b.status) return order(a.status) - order(b.status);
+        return a.scheduledFor.getTime() - b.scheduledFor.getTime();
+      });
   }
 
   async getVolunteerWork(id: string): Promise<VolunteerWork | undefined> {
     return this.volunteerWorks.get(id);
   }
 
-  async createVolunteerWork(
-    insert: InsertVolunteerWork,
-  ): Promise<VolunteerWork> {
+  async createVolunteerWork(insert: InsertVolunteerWork): Promise<VolunteerWork> {
     const id = randomUUID();
     const work: VolunteerWork = {
       id,
@@ -365,17 +371,17 @@ export class MemStorage implements IStorage {
       description: insert.description,
       location: insert.location,
       scheduledFor: insert.scheduledFor,
+      endDate: insert.endDate ?? null,
       hours: insert.hours,
       status: insert.status ?? "open",
+      category: insert.category ?? "other",
+      maxVolunteers: insert.maxVolunteers ?? null,
     };
     this.volunteerWorks.set(id, work);
     return work;
   }
 
-  async updateVolunteerWork(
-    id: string,
-    updates: UpdateVolunteerWork,
-  ): Promise<VolunteerWork | undefined> {
+  async updateVolunteerWork(id: string, updates: UpdateVolunteerWork): Promise<VolunteerWork | undefined> {
     const existing = this.volunteerWorks.get(id);
     if (!existing) return undefined;
     const merged: VolunteerWork = { ...existing, ...updates };
@@ -390,34 +396,50 @@ export class MemStorage implements IStorage {
     return this.volunteerWorks.delete(id);
   }
 
-  async createVolunteerSignup(
-    userId: string,
-    workId: string,
-  ): Promise<VolunteerSignup | null> {
+  async createVolunteerSignup(userId: string, workId: string): Promise<VolunteerSignup | null> {
     const existing = Array.from(this.volunteerSignups.values()).find(
       (s) => s.userId === userId && s.workId === workId,
     );
     if (existing) return existing;
+
+    // Auto-close if max reached after this signup
+    const work = this.volunteerWorks.get(workId);
+    const counts = await this.getSignupCountsByWorkId();
+    const currentCount = counts[workId] ?? 0;
+    if (work?.maxVolunteers != null && currentCount >= work.maxVolunteers) {
+      return null; // At capacity
+    }
+
     const id = randomUUID();
-    const signup: VolunteerSignup = {
-      id,
-      userId,
-      workId,
-      signedUpAt: new Date(),
-    };
+    const signup: VolunteerSignup = { id, userId, workId, signedUpAt: new Date() };
     this.volunteerSignups.set(id, signup);
+
+    // Check again after adding
+    const newCount = currentCount + 1;
+    if (work?.maxVolunteers != null && newCount >= work.maxVolunteers && work.status === "open") {
+      this.volunteerWorks.set(workId, { ...work, status: "closed" });
+    }
+
     return signup;
   }
 
-  async deleteVolunteerSignup(
-    userId: string,
-    workId: string,
-  ): Promise<boolean> {
+  async deleteVolunteerSignup(userId: string, workId: string): Promise<boolean> {
     const entry = Array.from(this.volunteerSignups.entries()).find(
       ([, s]) => s.userId === userId && s.workId === workId,
     );
     if (!entry) return false;
-    return this.volunteerSignups.delete(entry[0]);
+    const deleted = this.volunteerSignups.delete(entry[0]);
+    // Re-open if below max
+    if (deleted) {
+      const work = this.volunteerWorks.get(workId);
+      if (work?.status === "closed" && work.maxVolunteers != null) {
+        const counts = await this.getSignupCountsByWorkId();
+        if ((counts[workId] ?? 0) < work.maxVolunteers) {
+          this.volunteerWorks.set(workId, { ...work, status: "open" });
+        }
+      }
+    }
+    return deleted;
   }
 
   async getSignupsByUserId(userId: string): Promise<VolunteerSignup[]> {
